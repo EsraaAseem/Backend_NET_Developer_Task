@@ -1,41 +1,44 @@
-## Project Task Management API
+# 📋 Project Task Management API
 
-## A scalable backend API built with ASP.NET Core using Clean Architecture, CQRS, JWT Authentication, and Entity Framework Core.
+> A scalable backend API built with **ASP.NET Core** following **Clean Architecture**, **CQRS**, **JWT Authentication**, and **Entity Framework Core**.
 
-This project allows authenticated users to manage:
+---
 
-Projects
-## Tasks inside projects
+## ✨ Overview
 
-The solution demonstrates:
+This API allows authenticated users to manage **Projects** and **Tasks** with a clean, maintainable, and scalable architecture.
 
-Clean Architecture
-SOLID Principles
-CQRS with MediatR
-JWT Authentication
-Repository Pattern
-Validation Pipeline
-Global Exception Handling
-Scalable Layered Design
-Tech Stack
-.NET 9
-ASP.NET Core Web API
-Entity Framework Core
-SQL Server
-JWT Authentication
-## Architecture
+---
 
-The project follows Clean Architecture principles.
+## 🚀 Tech Stack
+
+| Technology | Purpose |
+|---|---|
+| **.NET 9** | Runtime |
+| **ASP.NET Core Web API** | API Framework |
+| **Entity Framework Core** | ORM |
+| **SQL Server** | Database |
+| **MediatR** | CQRS Implementation |
+| **FluentValidation** | Input Validation |
+| **JWT Bearer** | Authentication |
+
+---
+
+## 🏛️ Architecture
+
+The project follows **Clean Architecture** principles with a strict separation of concerns:
+
+```
 ProjectTaskManagement
 │
-├── API
+├── 📡 API                          → Entry point, Program.cs, DI registration
 │
-├── Presentation
+├── 🖥️  Presentation                → Controllers, Middlewares, Filters
 │   ├── Controllers
 │   ├── Middlewares
 │   └── Filters
 │
-├── Application
+├── ⚙️  Application                 → Business Logic, CQRS, Validation
 │   ├── Features
 │   ├── DTOs
 │   ├── Validators
@@ -43,118 +46,258 @@ ProjectTaskManagement
 │   ├── Interfaces
 │   └── Services
 │
-├── Persistence
+├── 🗄️  Persistence                 → Database, Repositories
 │   ├── DbContext
 │   ├── Configurations
 │   └── Repositories
 │
-├── Infrastructure
+├── 🔧 Infrastructure               → External Services, JWT
 │   ├── JWT
 │   └── External Services
 │
-└── Domain
+└── 🏗️  Domain                      → Entities, Enums, Core Models
     ├── Models
     ├── Enums
     └── Common
-## Features
-## ## Authentication
-Register
-Login
-JWT Token Generation
-Projects Module
-Create Project
-Get All Projects
-Get Project By Id
-Update Project
-Delete Project
-Task Items Module
-Create Task
-Update Task Status
-Get Tasks By Project
-Delete Task
-Authentication
+```
 
-The API uses JWT Bearer Authentication.
+### Design Principles
 
-After login, include the token in request headers:
-Authorization: Bearer YOUR_TOKEN
-## Project Model
+- ✅ **Clean Architecture**
+- ✅ **SOLID Principles**
+- ✅ **CQRS with MediatR**
+- ✅ **Repository Pattern**
+- ✅ **Validation Pipeline**
+- ✅ **Global Exception Handling**
+- ✅ **Scalable Layered Design**
+
+---
+
+## 🔐 Authentication
+
+The API uses **JWT Bearer Authentication**.
+
+### Endpoints
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/Auth/register` | Register a new user |
+| `POST` | `/api/Auth/login` | Login and receive JWT token |
+
+### Using the Token
+
+After login, include the token in every request header:
+
+```http
+Authorization: Bearer YOUR_TOKEN_HERE
+```
+
+---
+
+## 📁 Features
+
+### Projects Module
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/Projects` | Create a new project |
+| `GET` | `/api/Projects` | Get all projects |
+| `GET` | `/api/Projects/{id}` | Get project by ID |
+| `PUT` | `/api/Projects/{id}` | Update project |
+| `DELETE` | `/api/Projects/{id}` | Delete project |
+
+### Task Items Module
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `POST` | `/api/TaskItems` | Create a new task |
+| `GET` | `/api/TaskItems/{projectId}` | Get tasks by project |
+| `PUT` | `/api/TaskItems/{id}/status` | Update task status |
+| `DELETE` | `/api/TaskItems/{id}` | Delete task |
+
+---
+
+## 📦 Data Models
+
+### Project
+```json
 {
-  "id": "id",
+  "id": 1,
   "name": "Project Name",
   "description": "Project Description",
   "createdAt": "2026-05-22T10:00:00Z"
 }
-## Task Model
+```
+
+### Task Item
+```json
 {
-  "id": "id",
+  "id": 1,
   "title": "Task Title",
   "description": "Task Description",
   "status": 1,
   "dueDate": "2026-05-30T00:00:00",
   "priority": 2,
-  "projectId": "id"
+  "projectId": 1
 }
-## Task Status Enum
-1= TODO
-2= Pending
-3 = InProgress
-4 = Completed
+```
 
-## CQRS Pattern
-The application uses CQRS with MediatR.
+### Task Status Enum
 
-Each feature contains:
+| Value | Status |
+|---|---|
+| `1` | Todo |
+| `2` | Pending |
+| `3` | In Progress |
+| `4` | Completed |
 
-Command / Query
-Handler
-Validator
-DTOs
-Example:
+---
+
+## ⚡ CQRS Pattern
+
+Each feature follows the **CQRS pattern** with MediatR:
+
+```
 Features/
  └── Projects/
       ├── Commands/
+      │    ├── CreateProject/
+      │    │    ├── CreateProjectCommand.cs
+      │    │    ├── CreateProjectCommandHandler.cs
+      │    │    └── CreateProjectCommandValidator.cs
+      │    ├── UpdateProject/
+      │    └── DeleteProject/
       └── Queries/
-## Validation
+           ├── GetAllProjects/
+           └── GetProjectById/
+```
 
-Validation is implemented using:
+---
 
-FluentValidation
-MediatR Pipeline Behaviors
+## ✅ Validation
 
-Example:
+Validation is implemented using **FluentValidation** with **MediatR Pipeline Behaviors** — all validation happens before the handler is invoked.
 
-LoginCommandValidator
-CreateProjectCommandValidator
-CreateTaskItemCommandValidator
-Global Exception Handling
+```
+Request → ValidationPipelineBehavior → Handler
+               ↓ (if invalid)
+          GenericResponse (400 Bad Request)
+```
 
-## Unhandled exceptions are handled using custom middleware.
+Examples of validators:
+- `LoginCommandValidator`
+- `CreateProjectCommandValidator`
+- `CreateTaskItemCommandValidator`
 
-Features:
+---
 
-Centralized exception handling
-Consistent API response structure
-JSON formatted responses
+## 🌐 Global Exception Handling
 
-## Generic Response Structure
+All unhandled exceptions and HTTP errors are caught by `GlobalExceptionHandlingMiddleware`:
 
-All endpoints return a unified response model.
+- ✅ Centralized exception handling
+- ✅ Consistent API response structure
+- ✅ Handles `401 Unauthorized` with custom response
+- ✅ JSON formatted responses
 
-Example:
+---
+
+## 📬 Generic Response Structure
+
+All endpoints return a **unified response model**:
+
+```json
 {
   "isSuccess": true,
   "message": "Project created successfully",
   "statusCode": 200,
   "data": null
 }
-## Database
+```
 
-Database provider:
+### Error Response Example
+```json
+{
+  "isSuccess": false,
+  "message": "User not signed in",
+  "statusCode": 401,
+  "data": null
+}
+```
 
-SQL Server
+---
 
-Entity Framework Core is used with:
+## 🗄️ Database
 
-Code First Approach
-Migrations
+- **Provider:** SQL Server
+- **Approach:** Code First with EF Core Migrations
+
+### Setup
+
+```bash
+# Add migration
+dotnet ef migrations add Init \
+  --project ProjectTaskManagement.Presistance \
+  --startup-project ProjectTaskManagement.Api
+
+# Apply migration
+dotnet ef database update \
+  --project ProjectTaskManagement.Presistance \
+  --startup-project ProjectTaskManagement.Api
+```
+
+### Connection String (`appsettings.json`)
+```json
+"ConnectionStrings": {
+  "DefaultConnection": "Server=.;Database=ProjectTaskManagementDb;User Id=sa;Password=YourPassword;TrustServerCertificate=True"
+}
+```
+
+---
+
+## ⚙️ Configuration (`appsettings.json`)
+
+```json
+{
+  "ConnectionStrings": {
+    "DefaultConnection": "YOUR_CONNECTION_STRING"
+  },
+  "JWT": {
+    "Key": "YOUR_SECRET_KEY_MIN_32_CHARS",
+    "Issuer": "ProjectTaskManagement",
+    "Audience": "ProjectTaskManagementUsers",
+    "DurationInDays": 7
+  }
+}
+```
+
+---
+
+## 🏃 Getting Started
+
+```bash
+# 1. Clone the repository
+git clone https://github.com/your-username/ProjectTaskManagement.git
+
+# 2. Navigate to the project
+cd ProjectTaskManagement
+
+# 3. Update connection string in appsettings.json
+
+# 4. Apply migrations
+dotnet ef database update --startup-project ProjectTaskManagement.Api
+
+# 5. Run the API
+dotnet run --project ProjectTaskManagement.Api
+```
+
+Then navigate to:
+```
+https://localhost:7273/swagger
+```
+
+---
+
+## 📄 License
+
+This project is licensed under the MIT License.
