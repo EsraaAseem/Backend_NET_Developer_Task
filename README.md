@@ -41,6 +41,7 @@ ProjectTaskManagement
 ├──   Application                 → Business Logic, CQRS, Validation
 │   ├── Features
 │   ├── DTOs
+    ├── Seed Data
 │   ├── Validators
 │   ├── Behaviors
 │   ├── Interfaces
@@ -77,6 +78,19 @@ ProjectTaskManagement
 
 The API uses **JWT Bearer Authentication**.
 
+##  Authorization & Roles
+
+The API now supports **Role-Based Authorization** using JWT claims.
+
+### Roles
+
+| Role | Description |
+|---|---|
+| `User` | Default role assigned during registration |
+| `Admin` | Seeded system administrator role |
+
+---
+
 ### Endpoints
 
 | Method | Endpoint | Description |
@@ -105,6 +119,14 @@ Authorization: Bearer YOUR_TOKEN_HERE
 | `GET` | `/api/Projects/{id}` | Get project by ID |
 | `PUT` | `/api/Projects/{id}` | Update project |
 | `DELETE` | `/api/Projects/{id}` | Delete project |
+
+### Admin Features
+
+| Method | Endpoint | Description |
+|---|---|---|
+| `GET` | `/api/Projects/admin/all-projects` | Get all projects (Admin only) |
+
+---
 
 ### Task Items Module
 
@@ -190,6 +212,13 @@ Examples of validators:
 - `CreateTaskItemCommandValidator`
 
 ---
+### Behavior
+
+-  Users can only access their own Projects and Tasks
+-  Admin users can access all system data
+  
+---
+
 
 ##  Global Exception Handling
 
@@ -231,7 +260,13 @@ All endpoints return a **unified response model**:
 
 - **Provider:** SQL Server
 - **Approach:** Code First with EF Core Migrations
+- 
+### Implementation Notes
 
+- Roles are added using ASP.NET Core Identity
+- Roles are included in JWT token claims
+- Authorization is enforced using `[Authorize(Roles = "Admin")]`
+  
 ### Setup
 
 ```bash
