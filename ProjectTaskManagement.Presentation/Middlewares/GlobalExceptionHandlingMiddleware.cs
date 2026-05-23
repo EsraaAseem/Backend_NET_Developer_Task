@@ -31,6 +31,12 @@ namespace ProjectTaskManagement.Presentation.Middlewares
                 {
                     await HandleUnauthorizedAsync(context);
                 }
+                if (context.Response.StatusCode ==
+                  (int)HttpStatusCode.Forbidden)
+                {
+                    await HandleForbiddenAsync(context);
+                    return;
+                }
             }
             catch (Exception ex)
             {
@@ -46,6 +52,34 @@ namespace ProjectTaskManagement.Presentation.Middlewares
                 IsSuccess = false,
                 Message = "User not signed in",
                 StatusCode = HttpStatusCode.Unauthorized
+            };
+
+            context.Response.ContentType =
+                "application/json";
+
+            context.Response.StatusCode =
+                (int)HttpStatusCode.OK;
+
+            var options = new JsonSerializerOptions
+            {
+                PropertyNamingPolicy =
+                    JsonNamingPolicy.CamelCase
+            };
+
+            var json = JsonSerializer.Serialize(
+                response,
+                options);
+
+            await context.Response.WriteAsync(json);
+        }
+        private static async Task HandleForbiddenAsync(
+        HttpContext context)
+        {
+            var response = new GenericResponse<string>
+            {
+                IsSuccess = false,
+                Message = "Access denied",
+                StatusCode = HttpStatusCode.Forbidden
             };
 
             context.Response.ContentType =

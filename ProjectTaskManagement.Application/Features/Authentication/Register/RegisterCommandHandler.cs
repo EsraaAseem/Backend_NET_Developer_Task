@@ -50,11 +50,13 @@ namespace ProjectTaskManagement.Application.Features.Authentication.Register
                 return GenericResponse<AuthResponseDto>
                     .BadRequestResponse(result.Errors.First().Description);
             }
+            await _userManager.AddToRoleAsync(user, "User");
+
             var authModel = new AuthModel
             {
                 UserName = user.UserName,
                 Id = user.Id,
-               // Role = "User"
+               Role = "User"
             };
 
             var token = await _jwtService.GenerateToken(authModel);

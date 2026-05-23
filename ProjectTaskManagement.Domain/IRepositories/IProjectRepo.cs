@@ -8,5 +8,6 @@ namespace ProjectTaskManagement.Domain.IRepositories
         Task<IEnumerable<Project>> GetUserProjectsAsync(string userId);
         Task<Project?> GetProjectWithTasksAsync(int projectId);
         bool CheckProjectName(string name, string userId);
+        Task<IEnumerable<Project>> GetProjectsAsync();
     }
 }

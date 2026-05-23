@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.OpenApi.Models;
+using ProjectTaskManagement.Application.Abstrations.Services;
 using ProjectTaskManagement.Application.ExtensionService;
 using ProjectTaskManagement.Infrastructure.ExtensionServices;
 using ProjectTaskManagement.Presentation.Middlewares;
@@ -10,7 +11,6 @@ using ProjectTaskManagement.Presistance.ExtensionServices;
 
 var builder = WebApplication.CreateBuilder(args);
 
-// Add services to the container.
 builder.Services.AddInfrastructure(builder.Configuration)
                 .AddApplication()
                 .AddPresistance(builder.Configuration);
@@ -19,7 +19,7 @@ builder.Services.Configure<ApiBehaviorOptions>(options =>
 {
     options.SuppressModelStateInvalidFilter = true;
 });
-// Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
+
 builder.Services.AddOpenApi();
 
 builder.Services.AddHttpContextAccessor();
@@ -71,7 +71,6 @@ builder.Services.AddAuthentication(options =>
 });
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
@@ -84,4 +83,11 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
+using (var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+
+    await IdentitySeeder.SeedAsync(services);
+}
+
 app.Run();

@@ -7,6 +7,7 @@ using ProjectTaskManagement.Application.Features.Projects.Commands.CreateProject
 using ProjectTaskManagement.Application.Features.Projects.Commands.DeleteProject;
 using ProjectTaskManagement.Application.Features.Projects.Commands.UpdateProject;
 using ProjectTaskManagement.Application.Features.Projects.Queries.GetAllProjects;
+using ProjectTaskManagement.Application.Features.Projects.Queries.GetAllProjectsForAdmin;
 using ProjectTaskManagement.Application.Features.Projects.Queries.GetProjectById;
 
 namespace ProjectTaskManagement.Presentation.Controllers
@@ -32,7 +33,15 @@ namespace ProjectTaskManagement.Presentation.Controllers
 
             return Ok(result);
         }
+        [Authorize(Roles = "Admin")]
+        [HttpGet("admin/all-projects")]
+        public async Task<IActionResult> GetAllProjectsForAdmin()
+        {
+            var result = await Mediator.Send(
+                new GetAllProjectsForAdminQuery());
 
+            return Ok( result);
+        }
         [HttpGet("{id}")]
         public async Task<IActionResult> GetById(int id)
         {
@@ -60,5 +69,6 @@ namespace ProjectTaskManagement.Presentation.Controllers
 
             return Ok(result);
         }
+       
     }
 }

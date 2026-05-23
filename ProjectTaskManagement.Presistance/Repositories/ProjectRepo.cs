@@ -29,5 +29,10 @@ namespace ProjectTaskManagement.Presistance.Repositories
                 .Where(p => p.UserId == userId)
                 .ToListAsync();
         }
+        public async Task<IEnumerable<Project>> GetProjectsAsync()
+        {
+            return await _context.Projects
+                .ToListAsync();
+        }
     }
 }

@@ -45,11 +45,13 @@ namespace ProjectTaskManagement.Application.Features.Authentication.Login
                 return GenericResponse<AuthResponseDto>
                     .BadRequestResponse("Invalid credentials");
             }
+            var roles = await _userManager.GetRolesAsync(user);
+
             var authModel = new AuthModel
             {
                 UserName = user.UserName,
                 Id = user.Id,
-                // Role = "User"
+                Role = roles.FirstOrDefault() ?? "User"
             };
 
             var token = await _jwtService.GenerateToken(authModel);
