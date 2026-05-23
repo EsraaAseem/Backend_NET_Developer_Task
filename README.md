@@ -1,16 +1,16 @@
-# 📋 Project Task Management API
+#  Project Task Management API
 
 > A scalable backend API built with **ASP.NET Core** following **Clean Architecture**, **CQRS**, **JWT Authentication**, and **Entity Framework Core**.
 
 ---
 
-## ✨ Overview
+##  Overview
 
 This API allows authenticated users to manage **Projects** and **Tasks** with a clean, maintainable, and scalable architecture.
 
 ---
 
-## 🚀 Tech Stack
+##  Tech Stack
 
 | Technology | Purpose |
 |---|---|
@@ -24,21 +24,21 @@ This API allows authenticated users to manage **Projects** and **Tasks** with a 
 
 ---
 
-## 🏛️ Architecture
+##  Architecture
 
 The project follows **Clean Architecture** principles with a strict separation of concerns:
 
 ```
 ProjectTaskManagement
 │
-├── 📡 API                          → Entry point, Program.cs, DI registration
+├──  API                          → Entry point, Program.cs, DI registration
 │
-├── 🖥️  Presentation                → Controllers, Middlewares, Filters
+├──   Presentation                → Controllers, Middlewares, Filters
 │   ├── Controllers
 │   ├── Middlewares
 │   └── Filters
 │
-├── ⚙️  Application                 → Business Logic, CQRS, Validation
+├──   Application                 → Business Logic, CQRS, Validation
 │   ├── Features
 │   ├── DTOs
 │   ├── Validators
@@ -46,16 +46,16 @@ ProjectTaskManagement
 │   ├── Interfaces
 │   └── Services
 │
-├── 🗄️  Persistence                 → Database, Repositories
+├──   Persistence                 → Database, Repositories
 │   ├── DbContext
 │   ├── Configurations
 │   └── Repositories
 │
-├── 🔧 Infrastructure               → External Services, JWT
+├── Infrastructure               → External Services, JWT
 │   ├── JWT
 │   └── External Services
 │
-└── 🏗️  Domain                      → Entities, Enums, Core Models
+└── Domain                      → Entities, Enums, Core Models
     ├── Models
     ├── Enums
     └── Common
@@ -73,7 +73,7 @@ ProjectTaskManagement
 
 ---
 
-## 🔐 Authentication
+##  Authentication
 
 The API uses **JWT Bearer Authentication**.
 
@@ -94,7 +94,7 @@ Authorization: Bearer YOUR_TOKEN_HERE
 
 ---
 
-## 📁 Features
+##  Features
 
 ### Projects Module
 
@@ -117,7 +117,7 @@ Authorization: Bearer YOUR_TOKEN_HERE
 
 ---
 
-## 📦 Data Models
+##  Data Models
 
 ### Project
 ```json
@@ -153,7 +153,7 @@ Authorization: Bearer YOUR_TOKEN_HERE
 
 ---
 
-## ⚡ CQRS Pattern
+##  CQRS Pattern
 
 Each feature follows the **CQRS pattern** with MediatR:
 
@@ -174,7 +174,7 @@ Features/
 
 ---
 
-## ✅ Validation
+##  Validation
 
 Validation is implemented using **FluentValidation** with **MediatR Pipeline Behaviors** — all validation happens before the handler is invoked.
 
@@ -191,7 +191,7 @@ Examples of validators:
 
 ---
 
-## 🌐 Global Exception Handling
+##  Global Exception Handling
 
 All unhandled exceptions and HTTP errors are caught by `GlobalExceptionHandlingMiddleware`:
 
@@ -202,7 +202,7 @@ All unhandled exceptions and HTTP errors are caught by `GlobalExceptionHandlingM
 
 ---
 
-## 📬 Generic Response Structure
+##  Generic Response Structure
 
 All endpoints return a **unified response model**:
 
@@ -227,7 +227,7 @@ All endpoints return a **unified response model**:
 
 ---
 
-## 🗄️ Database
+##  Database
 
 - **Provider:** SQL Server
 - **Approach:** Code First with EF Core Migrations
@@ -273,7 +273,7 @@ dotnet ef database update \
 
 ---
 
-## 🏃 Getting Started
+##  Getting Started
 
 ```bash
 # 1. Clone the repository
